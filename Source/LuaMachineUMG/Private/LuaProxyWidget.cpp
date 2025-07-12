@@ -6,6 +6,7 @@
 #include "LuaDelegate.h"
 #include "LuaProxySlot.h"
 #include "LuaState.h"
+#include "Components/CanvasPanel.h"
 
 ULuaState* ULuaProxyWidget::GetLuaState()
 {
@@ -47,13 +48,13 @@ FLuaValue ULuaProxyWidget::LuaMetaMethodIndex_Implementation(const FString& Key)
 
 		return SetContentWidget;
 	}
-	if (Key == "AddChild")
+	if (Key == "AddChild" || Key == "AddChildToCanvas")
 	{
-		FLuaValue SetContentWidget = FLuaValue([this](TArray<FLuaValue> LuaArgs) -> FLuaValueOrError
+		FLuaValue SetContentWidget = FLuaValue([this, &Key](TArray<FLuaValue> LuaArgs) -> FLuaValueOrError
 		{
 			if (!Widget->IsA<UPanelWidget>())
 			{
-				return FString("AddChild can be called only on PanelWidget instances");
+				return FString::Printf(TEXT("%s can be called only on PanelWidget instances"), *Key);
 			}
 			if (!LuaArgs.IsValidIndex(0) || !LuaArgs[0].Object || !LuaArgs[0].Object->IsA<ULuaProxyWidget>())
 			{
