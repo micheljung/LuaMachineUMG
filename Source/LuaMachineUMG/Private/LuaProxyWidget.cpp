@@ -110,6 +110,7 @@ bool ULuaProxyWidget::IsKnownProperty(const FString& Key)
 		"CheckedState",
 		"BrushColor",
 		"Brush",
+		"Justification",
 	};
 
 	return KnownProperties.Contains(FName(Key));
