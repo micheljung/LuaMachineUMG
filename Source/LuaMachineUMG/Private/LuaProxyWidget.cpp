@@ -74,7 +74,7 @@ FLuaValue ULuaProxyWidget::LuaMetaMethodIndex_Implementation(const FString& Key)
 
 		return SetContentWidget;
 	}
-	if (Key == "ColorAndOpacity" || Key == "Text" || Key == "CheckedState" || Key == "BrushColor" || Key == "Brush")
+	if (IsKnownProperty(Key))
 	{
 		return GetLuaState()->GetLuaValueFromProperty(Widget, *Key);
 	}
@@ -89,7 +89,7 @@ bool ULuaProxyWidget::LuaMetaMethodNewIndex_Implementation(const FString& Key, F
 	{
 		bSuccess = GetLuaState()->SetPropertyFromLuaValue(Widget, *Key, Value);
 	}
-	else if (Key == "ColorAndOpacity" || Key == "Text" || Key == "CheckedState" || Key == "BrushColor" || Key == "Brush")
+	else if (IsKnownProperty(Key))
 	{
 		bSuccess = GetLuaState()->SetPropertyFromLuaValue(Widget, *Key, Value);
 	}
@@ -100,4 +100,17 @@ bool ULuaProxyWidget::LuaMetaMethodNewIndex_Implementation(const FString& Key, F
 	}
 
 	return bSuccess;
+}
+
+bool ULuaProxyWidget::IsKnownProperty(const FString& Key)
+{
+	static const TSet<FName> KnownProperties = {
+		"ColorAndOpacity",
+		"Text",
+		"CheckedState",
+		"BrushColor",
+		"Brush",
+	};
+
+	return KnownProperties.Contains(FName(Key));
 }
