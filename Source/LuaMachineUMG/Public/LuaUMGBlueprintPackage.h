@@ -18,6 +18,9 @@ public:
 	FLuaValue CreateUserWidget();
 
 	UFUNCTION()
+	FLuaValue SetShowMouseCursor(const bool bShow);
+
+	UFUNCTION()
 	FLuaValue LoadTextureAsBrush(FLuaValue TexturePath);
 	
 };

@@ -8,6 +8,7 @@ ULuaUMGBlueprintPackage::ULuaUMGBlueprintPackage()
 {
 	Table.Add("create_user_widget", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, CreateUserWidget)));
 	Table.Add("load_texture_as_brush", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, LoadTextureAsBrush)));
+	Table.Add("set_show_mouse_cursor", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, SetShowMouseCursor)));
 }
 
 FLuaValue ULuaUMGBlueprintPackage::CreateUserWidget()
@@ -20,6 +21,18 @@ FLuaValue ULuaUMGBlueprintPackage::CreateUserWidget()
 	ULuaUserWidget* NewUserWidget = CreateWidget<ULuaUserWidget>(CurrentWorld);
 	NewUserWidget->OwningLuaState = GetLuaStateInstance();
 	return NewUserWidget;
+}
+
+FLuaValue ULuaUMGBlueprintPackage::SetShowMouseCursor(const bool bShow)
+{
+	APlayerController* PlayerController = GetLuaStateInstance()->GetWorld()->GetFirstPlayerController();
+	if (!PlayerController)
+	{
+		return FLuaValue(true);
+	}
+
+	PlayerController->SetShowMouseCursor(bShow);
+	return FLuaValue(true);
 }
 
 FLuaValue ULuaUMGBlueprintPackage::LoadTextureAsBrush(FLuaValue TexturePath)
