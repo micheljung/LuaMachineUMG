@@ -7,6 +7,7 @@
 #include "LuaProxySlot.h"
 #include "LuaState.h"
 #include "Components/CanvasPanel.h"
+#include "Components/MenuAnchor.h"
 
 ULuaState* ULuaProxyWidget::GetLuaState()
 {
@@ -73,6 +74,21 @@ FLuaValue ULuaProxyWidget::LuaMetaMethodIndex_Implementation(const FString& Key)
 		});
 
 		return SetContentWidget;
+	}
+	if (Key == "ToggleOpen")
+	{
+		FLuaValue ToggleOpenWidget = FLuaValue([this, &Key](TArray<FLuaValue> LuaArgs) -> FLuaValueOrError
+		{
+			if (!Widget->IsA<UMenuAnchor>())
+			{
+				return FString::Printf(TEXT("%s can be called only on UMenuAnchor instances"), *Key);
+			}
+			const bool bFocusOnOpen = LuaArgs.IsValidIndex(0) && LuaArgs[0].ToBool();
+			Cast<UMenuAnchor>(Widget)->ToggleOpen(bFocusOnOpen);
+			return FLuaValue();
+		});
+
+		return ToggleOpenWidget;
 	}
 	if (IsKnownProperty(Key))
 	{
