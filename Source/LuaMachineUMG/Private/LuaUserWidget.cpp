@@ -53,11 +53,20 @@ FLuaValue ULuaUserWidget::LuaMetaMethodIndex_Implementation(const FString& Key)
 				RemoveFromParent();
 			}
 			WidgetTree->RootWidget = Cast<ULuaProxyWidget>(LuaArgs[0].Object)->Widget;
-			AddToViewport();
 			return FLuaValue();
 			});
 
 		return SetRootWidget;
+	}
+	if (Key == "AddToViewport")
+	{
+		FLuaValue AddToViewportWidget = FLuaValue([this](TArray<FLuaValue> LuaArgs) -> FLuaValueOrError
+		{
+			AddToViewport();
+			return FLuaValue();
+		});
+
+		return AddToViewportWidget;
 	}
 
 	return FLuaValue();
