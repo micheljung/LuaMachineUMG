@@ -130,6 +130,7 @@ bool ULuaProxyWidget::IsKnownProperty(const FString& Key)
 		"Justification",
 		"Font",
 		"WidgetStyle",
+		"Visibility",
 	};
 
 	return KnownProperties.Contains(FName(Key));
