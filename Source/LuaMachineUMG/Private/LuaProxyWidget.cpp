@@ -29,13 +29,15 @@ FLuaValue ULuaProxyWidget::LuaMetaMethodIndex_Implementation(const FString& Key)
 			{
 				return FString("SetContent can be called only on ContentWidget instances");
 			}
-			if (!LuaArgs.IsValidIndex(0) || !LuaArgs[0].Object || !LuaArgs[0].Object->IsA<ULuaProxyWidget>())
+			if (!LuaArgs.IsValidIndex(0) || !LuaArgs[0].Object || !(LuaArgs[0].Object->IsA<ULuaProxyWidget>() || LuaArgs[0].Object->IsA<UWidget>()))
 			{
 				return FString("Expected first argument to be a widget");
 			}
 
-			UPanelSlot* Slot = Cast<UContentWidget>(Widget)->SetContent(
-				Cast<ULuaProxyWidget>(LuaArgs[0].Object)->Widget);
+			const ULuaProxyWidget* ProxyWidget = Cast<ULuaProxyWidget>(LuaArgs[0].Object);
+			UWidget* ChildWidget = ProxyWidget ? ProxyWidget->Widget : Cast<UWidget>(LuaArgs[0].Object);
+
+			UPanelSlot* Slot = Cast<UContentWidget>(Widget)->SetContent(ChildWidget);
 			if (Slot)
 			{
 				ULuaProxySlot* NewProxySlot = NewObject<ULuaProxySlot>(GetLuaState());
@@ -57,12 +59,15 @@ FLuaValue ULuaProxyWidget::LuaMetaMethodIndex_Implementation(const FString& Key)
 			{
 				return FString::Printf(TEXT("%s can be called only on PanelWidget instances"), *Key);
 			}
-			if (!LuaArgs.IsValidIndex(0) || !LuaArgs[0].Object || !LuaArgs[0].Object->IsA<ULuaProxyWidget>())
+			if (!LuaArgs.IsValidIndex(0) || !LuaArgs[0].Object || !(LuaArgs[0].Object->IsA<ULuaProxyWidget>() || LuaArgs[0].Object->IsA<UWidget>()))
 			{
 				return FString("Expected first argument to be a widget");
 			}
 
-			UPanelSlot* Slot = Cast<UPanelWidget>(Widget)->AddChild(Cast<ULuaProxyWidget>(LuaArgs[0].Object)->Widget);
+			const ULuaProxyWidget* ProxyWidget = Cast<ULuaProxyWidget>(LuaArgs[0].Object);
+			UWidget* ChildWidget = ProxyWidget ? ProxyWidget->Widget : Cast<UWidget>(LuaArgs[0].Object);
+
+			UPanelSlot* Slot = Cast<UPanelWidget>(Widget)->AddChild(ChildWidget);
 			if (Slot)
 			{
 				ULuaProxySlot* NewProxySlot = NewObject<ULuaProxySlot>(GetLuaState());
