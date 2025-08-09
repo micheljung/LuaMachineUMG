@@ -49,6 +49,8 @@ bool ULuaProxySlot::IsKnownProperty(const FString& Key)
 		"Size",
 		"LayoutData",
 		"bAutoSize",
+		"VerticalAlignment",
+		"HorizontalAlignment",
 	};
 
 	return KnownProperties.Contains(FName(Key));
