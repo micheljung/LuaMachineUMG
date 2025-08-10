@@ -41,7 +41,8 @@ public class LuaMachineUMG : ModuleRules
 				"SlateCore",
 				"LuaMachine",
 				"UMG",
-				"RenderCore"
+				"RenderCore",
+				"InputCore"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
