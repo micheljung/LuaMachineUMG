@@ -23,4 +23,6 @@ public:
 	UFUNCTION()
 	FLuaValue LoadTextureAsBrush(FLuaValue TexturePath);
 	
+	UFUNCTION()
+	FLuaValue CreateLinearColorBrush(FLuaValue Color);
 };

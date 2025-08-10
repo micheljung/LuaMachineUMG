@@ -8,6 +8,7 @@ ULuaUMGBlueprintPackage::ULuaUMGBlueprintPackage()
 {
 	Table.Add("create_user_widget", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, CreateUserWidget)));
 	Table.Add("load_texture_as_brush", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, LoadTextureAsBrush)));
+	Table.Add("create_linear_color_brush", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, CreateLinearColorBrush)));
 	Table.Add("set_show_mouse_cursor", FLuaValue::Function(GET_FUNCTION_NAME_CHECKED(ULuaUMGBlueprintPackage, SetShowMouseCursor)));
 }
 
@@ -55,4 +56,12 @@ FLuaValue ULuaUMGBlueprintPackage::LoadTextureAsBrush(FLuaValue TexturePath)
 	FSlateImageBrush ImageBrush(Texture, FVector2D(TextureSize.X, TextureSize.Y));
 
 	return GetLuaStateInstance()->StructToLuaValue(ImageBrush);
+}
+
+FLuaValue ULuaUMGBlueprintPackage::CreateLinearColorBrush(FLuaValue Color)
+{
+	const FLinearColor LinearColor = GetLuaStateInstance()->LuaValueToBaseStruct<FLinearColor>(Color);
+	FSlateColorBrush ColorBrush(LinearColor);
+
+	return GetLuaStateInstance()->StructToLuaValue(ColorBrush);
 }
