@@ -127,6 +127,7 @@ bool ULuaProxyWidget::IsKnownProperty(const FString& Key)
 		"BrushColor",
 		"Brush",
 		"Justification",
+		"Font",
 	};
 
 	return KnownProperties.Contains(FName(Key));
